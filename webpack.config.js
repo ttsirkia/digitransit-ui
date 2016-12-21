@@ -51,11 +51,8 @@ function getRulesConfig(env) {
           plugins: [
             'transform-system-import-commonjs',
             path.join(__dirname, 'build/babelRelayPlugin'),
-            ['transform-runtime', {
-              helpers: true,
-              polyfill: false,
-              regenerator: true,
-            }],
+            ['transform-runtime', { helpers: true, polyfill: false, regenerator: true }],
+            'react-hot-loader/babel',
           ],
           ignore: [
             'app/util/piwik.js',
@@ -132,6 +129,7 @@ function getPluginsConfig(env) {
       new webpack.ContextReplacementPlugin(intlExpression, languageExpression),
       new webpack.ContextReplacementPlugin(themeExpression, selectedTheme),
       new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('development') } }),
+      new webpack.NamedModulesPlugin(),
       new webpack.LoaderOptionsPlugin({
         debug: true,
         options: {
@@ -225,6 +223,7 @@ function getDevelopmentEntry() {
   const entry = [
     'webpack-dev-server/client?http://localhost:' + port,
     'webpack/hot/dev-server',
+    'react-hot-loader/patch',
     './app/client',
   ];
   return entry;
